@@ -144,6 +144,10 @@ in {
       };
     };
 
+    services.cron.systemCronJobs = [
+      "${toString (cfg.testIndex * 4)} * * * * /run/current-system/sw/bin/systemctl restart cardano-node"
+    ];
+
     networking.firewall.allowedTCPPorts = [ cfg.port ];
 
     systemd.services.cardano-node = {
