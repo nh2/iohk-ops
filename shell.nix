@@ -1,5 +1,8 @@
-{ pkgs     ? import ((import <nixpkgs> {}).fetchFromGitHub (builtins.fromJSON (builtins.readFile ./nixpkgs-src.json))) {}
-, compiler ? pkgs.haskell.packages.ghc802
+let
+  nixpkgs  = (import <nixpkgs> {}).fetchFromGitHub (builtins.fromJSON (builtins.readFile ./nixpkgs-src.json));
+  pkgs     = import nixpkgs {};
+in
+{ compiler ? pkgs.haskell.packages.ghc802
 , intero   ? false
 }:
 
@@ -37,7 +40,11 @@ mkDerivation {
   executableHaskellDepends = [
    base turtle_1_3_0 cassava vector safe aeson yaml lens-aeson
   ];
-  # description  = "Visual mind assistant";
+  shellHook =
+  ''
+    export NIX_PATH=nixpkgs=${nixpkgs}
+    echo   NIX_PATH=$NIX_PATH
+  '';
   license      = stdenv.lib.licenses.agpl3;
 };
 

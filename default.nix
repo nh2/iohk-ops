@@ -7,7 +7,12 @@ with (import <nixpkgs/pkgs/development/haskell-modules/lib.nix> { inherit pkgs;}
 let
   lib = import <nixpkgs/lib>;
   prodMode = drv: overrideCabal drv (drv: {
-    configureFlags = [ "-f-asserts" "-f-dev-mode"];
+    doHaddock = false;
+    patchPhase = ''
+     export CSL_SYSTEM_TAG=linux64
+    '';
+    configureFlags = [ "-f-asserts" "-f-dev-mode" "-fwith-explorer" "--ghc-option=-DCONFIG=prod" "--ghc-option=-rtsopts" "--ghc-option=+RTS" "--ghc-option=+RTS" "--ghc-option=-A256m" "--ghc-option=-n2m" "--ghc-option=-RTS" ];
+    # makeFlags = ["+RTS -A256m -n2m -RTS"];
   });
   socket-io-src = pkgs.fetchgit (removeAttrs (lib.importJSON ./pkgs/engine-io.json) ["date"]);
   cardano-sl-src = pkgs.fetchgit (removeAttrs (lib.importJSON ./pkgs/cardano-sl.json) ["date"]);
@@ -32,12 +37,12 @@ in compiler.override {
     servant = dontCheck super.servant_0_10;
     servant-server = super.servant-server_0_10;
     servant-swagger = super.servant-swagger_1_1_2_1;
-    servant-docs = super.servant-docs_0_10;
 
-    memory = super.memory_0_14_5;
     cryptonite = super.cryptonite_0_23;
-    foundation = super.foundation_0_0_8;
+    cryptonite-openssl = super.cryptonite-openssl_0_6;
 
+    ether = super.ether_0_5_0_0;    
+    transformers-lift = super.transformers-lift_0_2_0_1;
     # sl-explorer fixes
     map-syntax = dontCheck super.map-syntax;
     snap = dontCheck super.snap;
@@ -48,23 +53,16 @@ in compiler.override {
 
     # TODO: https://github.com/NixOS/cabal2nix/issues/261
     cardano-sl-core = prodMode (super.callCabal2nix "cardano-sl-core" "${cardano-sl-src}/core" {});
-    cardano-sl-db = super.callCabal2nix "cardano-sl-db" "${cardano-sl-src}/db" {};
+    cardano-sl-db = prodMode (super.callCabal2nix "cardano-sl-db" "${cardano-sl-src}/db" {});
     cardano-sl-infra = prodMode (super.callCabal2nix "cardano-sl-infra" "${cardano-sl-src}/infra" {});
-    cardano-sl-lrc = super.callCabal2nix "cardano-sl-lrc" "${cardano-sl-src}/lrc" {};
-    cardano-sl-update = super.callCabal2nix "cardano-sl-update" "${cardano-sl-src}/update" {};
+    cardano-sl-lrc = prodMode (super.callCabal2nix "cardano-sl-lrc" "${cardano-sl-src}/lrc" {});
+    cardano-sl-update = prodMode (super.callCabal2nix "cardano-sl-update" "${cardano-sl-src}/update" {});
     cardano-sl-explorer = prodMode (super.callPackage ./pkgs/cardano-sl-explorer.nix { });
 
-    cardano-sl = overrideCabal (super.callCabal2nix "cardano-sl" cardano-sl-src {}) (drv: {
-      doHaddock = false;
-      patchPhase = ''
-       export CSL_SYSTEM_TAG=linux64
-      '';
-      # production full nodes shouldn't use wallet as it means different constants
-      configureFlags = [ "-f-asserts" "-f-dev-mode" "-fwith-explorer"];
-    });
-    cardano-sl-static = justStaticExecutables self.cardano-sl;
-    cardano-report-server-static = justStaticExecutables self.cardano-report-server;
-    cardano-sl-explorer-static = justStaticExecutables self.cardano-sl-explorer;
+    cardano-sl = prodMode (super.callCabal2nix "cardano-sl" cardano-sl-src {});
+    cardano-sl-static = self.cardano-sl;
+    cardano-report-server-static = self.cardano-report-server;
+    cardano-sl-explorer-static = self.cardano-sl-explorer;
 
     #mkDerivation = args: super.mkDerivation (args // {
     #enableLibraryProfiling = false;

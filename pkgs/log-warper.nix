@@ -7,11 +7,11 @@
 }:
 mkDerivation {
   pname = "log-warper";
-  version = "1.1.1";
+  version = "1.1.2";
   src = fetchgit {
     url = "https://github.com/serokell/log-warper.git";
-    sha256 = "06jc5dsg87xg0669dxdmmi0nxqnifdkilgcfmkcn2h3hwyda5ixc";
-    rev = "c2a21fd2971d9ed48cdd7295f8efd56fc8ec4821";
+    sha256 = "1la95i7sfc66jrjpm1c9d5w8bajb3wh06xj86s06i5gccaskwml9";
+    rev = "cb3288415d40318e04ca920ff81ea4ea8e0380bd";
   };
   isLibrary = true;
   isExecutable = true;
