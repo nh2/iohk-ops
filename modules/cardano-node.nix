@@ -26,7 +26,6 @@ let
   command = toString [
     cfg.executable
     "--listen ${if privateIP == null then "0.0.0.0" else privateIP}:${toString cfg.port}"
-    (optionalString (publicIP != null) "--pubhost ${publicIP}")
     # Profiling
     # NB. can trigger https://ghc.haskell.org/trac/ghc/ticket/7836
     # (it actually happened)
