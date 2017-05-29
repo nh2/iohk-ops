@@ -12,7 +12,7 @@ let
   smartGenIP = builtins.getEnv "SMART_GEN_IP";
   smartGenPeer =
     if (smartGenIP != "")
-    then "--kademlia-peer ${smartGenIP}:24962/${genDhtKey 100 }}"
+    then "--kademlia-peer ${smartGenIP}:24962}"
     else "";
   publicIP = config.networking.publicIPv4 or null;
   privateIP = config.networking.privateIPv4 or null;
@@ -46,7 +46,6 @@ let
        else "--flat-distr \"${distributionParam}\""))
     (optionalString cfg.jsonLog "--json-log ${stateDir}/jsonLog.json")
     "--kademlia-id ${cfg.dhtKey}"
-    "--peer-id `echo -n \"${cfg.dhtKey}\" | sed 's/_/\\//g' | sed 's/\\-/+/g' | base64 -d | tail -c 14 | base64 | sed 's/\\//_/g' | sed 's/\\+/-/g'`"
     (optionalString cfg.productionMode "--keyfile ${stateDir}key${toString (cfg.testIndex + 1)}.sk")
     (optionalString (cfg.productionMode && cfg.systemStart != 0) "--system-start ${toString cfg.systemStart}")
     (optionalString cfg.supporter "--supporter")
