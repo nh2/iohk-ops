@@ -27,7 +27,7 @@ let
     cfg.executable
     "--address ${if publicIP == null then "0.0.0.0" else publicIP}:${toString cfg.port}"
     "--listen ${if privateIP == null then "0.0.0.0" else privateIP}:${toString cfg.port}"
-    "--kademlia-address ${if publicIP == null then "0.0.0.0" else publicIP}:${toString cfg.port}"
+    "--kademlia-address ${if privateIP == null then "0.0.0.0" else privateIP}:${toString cfg.port}"
     # Profiling
     # NB. can trigger https://ghc.haskell.org/trac/ghc/ticket/7836
     # (it actually happened)
