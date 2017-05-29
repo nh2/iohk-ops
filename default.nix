@@ -57,6 +57,8 @@ in compiler.override {
     cardano-sl-infra = prodMode (super.callCabal2nix "cardano-sl-infra" "${cardano-sl-src}/infra" {});
     cardano-sl-lrc = prodMode (super.callCabal2nix "cardano-sl-lrc" "${cardano-sl-src}/lrc" {});
     cardano-sl-update = prodMode (super.callCabal2nix "cardano-sl-update" "${cardano-sl-src}/update" {});
+    cardano-sl-ssc = prodMode (super.callCabal2nix "cardano-sl-ssc" "${cardano-sl-src}/ssc" {});
+    cardano-sl-godtossing = prodMode (super.callCabal2nix "cardano-sl-godtossing" "${cardano-sl-src}/godtossing" {});
     cardano-sl-explorer = prodMode (super.callPackage ./pkgs/cardano-sl-explorer.nix { });
 
     cardano-sl = prodMode (super.callCabal2nix "cardano-sl" cardano-sl-src {});
