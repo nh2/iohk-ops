@@ -7,8 +7,8 @@ mkDerivation {
   version = "1.0.0";
   src = fetchgit {
     url = "https://github.com/input-output-hk/cardano-crypto";
-    sha256 = "02gjaj7889y30g2qfdh96ywrsdpmgfgyqyajw49zaklwjvkh87sv";
-    rev = "838b064d8a59286142aa2fe14434fe7601896ddb";
+    sha256 = "1nxm0vlg9w841cc4gyy87jk4hvc3iimpjv2a9q6d99ri7v4ynnb4";
+    rev = "96adbd5aa9a906859deddf170f8762a9ed85c0c9";
   };
   libraryHaskellDepends = [
     base bytestring cryptonite cryptonite-openssl deepseq hashable

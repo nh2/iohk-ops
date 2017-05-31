@@ -9,8 +9,8 @@ mkDerivation {
   version = "1.1.0.1";
   src = fetchgit {
     url = "https://github.com/serokell/kademlia.git";
-    sha256 = "1rij6jb9sqhxqpfqaxziwz7dxdirsnwaxzkgigqh8y3kyg2wkp8f";
-    rev = "21df94f41008f82ee023e8e0324c7e4a82c4fef2";
+    sha256 = "1b596ww8jmk7431fg2w5hnq38cipgss178sbpxyzd4gb10gvx4i4";
+    rev = "b4b0a6774368b9bbea96d7a03a1a451b6fc3cfea";
   };
   isLibrary = true;
   isExecutable = true;
