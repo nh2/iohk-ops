@@ -16,6 +16,12 @@ let
   });
   socket-io-src = pkgs.fetchgit (removeAttrs (lib.importJSON ./pkgs/engine-io.json) ["date"]);
   cardano-sl-src = pkgs.fetchgit (removeAttrs (lib.importJSON ./pkgs/cardano-sl.json) ["date"]);
+
+  overcabal = pkgs.haskell.lib.overrideCabal;
+  hubsrc    =      repo: rev: sha256:       pkgs.fetchgit { url = "https://github.com/" + repo; rev = rev; sha256 = sha256; };
+  overc     = old:                    args: overcabal old (oldAttrs: (oldAttrs // args));
+  overhub   = old: repo: rev: sha256: args: overc old ({ src = hubsrc repo rev sha256; }       // args);
+  overhage  = old: version:   sha256: args: overc old ({ version = version; sha256 = sha256; } // args);
 in compiler.override {
   overrides = self: super: {
     # To generate these go to ./pkgs and run ./generate.sh
@@ -35,14 +41,20 @@ in compiler.override {
 
     # servant-multipart needs servant 0.10
     servant = dontCheck super.servant_0_10;
+    servant-docs = super.servant-docs_0_10;
     servant-server = super.servant-server_0_10;
     servant-swagger = super.servant-swagger_1_1_2_1;
 
     cryptonite = super.cryptonite_0_23;
-    cryptonite-openssl = super.cryptonite-openssl_0_6;
+    cryptonite-openssl = overhage super.cryptonite-openssl "0.6" "19jhhz1ad5jw8zc7ia9bl77g7nw2g0qjk5nmz1zpngpvdg4rgjx8" {};
 
     ether = super.ether_0_5_0_0;    
-    transformers-lift = super.transformers-lift_0_2_0_1;
+    foundation = super.foundation_0_0_8;    
+    memory = super.memory_0_14_5;    
+    transformers-lift = overhage super.transformers-lift_0_2_0_0 "0.2.0.1" "17g03r5hpnygx0c9ybr9za6208ay0cjvz47rkyplv1r9zcivzn0b" {};
+    writer-cps-transformers = super.writer-cps-transformers_0_1_1_3;
+    writer-cps-mtl = super.writer-cps-mtl_0_1_1_4;
+
     # sl-explorer fixes
     map-syntax = dontCheck super.map-syntax;
     snap = dontCheck super.snap;
