@@ -16,8 +16,33 @@ let
   overGithub    = old: repo: rev: sha256: args: overC old ({ src = githubSrc repo rev sha256; }     // args);
   overHackage   = old: version:   sha256: args: overC old ({ version = version; sha256 = sha256; } // args);
 
+  cabal2nix     = overGithub compiler.cabal2nix "NixOS/cabal2nix"
+                  "b6834fd420e0223d0d57f8f98caeeb6ac088be88" "1ia2iw137sza655b0hf4hghpmjbsg3gz3galpvr5pbbsljp26m6p" { version = "2.2.1"; };
+  stack2nix     = dontCheck
+                  (pkgs.haskellPackages.callCabal2nix "stack2nix"
+                   (githubSrc "input-output-hk/stack2nix" "c27a9faa9ba2a7ffd162a38953a36caad15e6839" "1cmw7zq0sf5fr9sc4daf1jwlnjll9wjxqnww36dl9cbbj9ak0m77") {});
+  ## Mostly stolen from: nixpkgs/pkgs/development/haskell-modules/make-package-set.nix : haskellSrc2nix
+  stack2nixEmit = { name, src, sha256 ? null }:
+    let
+      sha256Arg = if isNull sha256 then "--sha256=" else ''--sha256="${sha256}"'';
+    in pkgs.stdenv.mkDerivation {
+      name = "stack2nix-${name}";
+      buildInputs = [ stack2nix cabal2nix pkgs.nix pkgs.nix-prefetch-git pkgs.nix-prefetch-hg ];
+      preferLocalBuild = true;
+      phases = ["installPhase"];
+      LANG = "en_US.UTF-8";
+      LOCALE_ARCHIVE = pkgs.lib.optionalString pkgs.stdenv.isLinux "${pkgs.glibcLocales}/lib/locale/locale-archive";
+      installPhase = ''
+        export HOME="$TMP"
+        mkdir -p "$out"
+        stack2nix "${src}" -o "$out/default.nix"
+      '';
+  };
+  callStack2nix = hpkgs: name: src: hpkgs.callPackage (stack2nixEmit { inherit src name; });
+
   socket-io-src = pkgs.fetchgit (removeAttrs (lib.importJSON ./pkgs/engine-io.json) ["date"]);
   cardano-sl-src = pkgs.fetchgit (removeAttrs (lib.importJSON ./pkgs/cardano-sl.json) ["date"]);
+
 in compiler.override {
   overrides = self: super: {
     # To generate these go to ./pkgs and run ./generate.sh
