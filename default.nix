@@ -29,7 +29,7 @@ in compiler.override {
     serokell-util = super.callPackage ./pkgs/serokell-util.nix { };
     acid-state = super.callPackage ./pkgs/acid-state.nix { };
     log-warper = super.callPackage ./pkgs/log-warper.nix { };
-    ed25519 = super.callPackage ./pkgs/ed25519.nix { };
+    ed25519 = dontCheck (super.callPackage ./pkgs/ed25519.nix { });
     rocksdb = super.callPackage ./pkgs/rocksdb-haskell.nix { rocksdb = pkgs.rocksdb; };
     kademlia = super.callPackage ./pkgs/kademlia.nix { };
     node-sketch = super.callPackage ./pkgs/time-warp-nt.nix { };
@@ -42,15 +42,29 @@ in compiler.override {
     # servant-multipart needs servant 0.10
     servant = dontCheck super.servant_0_10;
     servant-docs = super.servant-docs_0_10;
-    servant-server = super.servant-server_0_10;
-    servant-swagger = super.servant-swagger_1_1_2_1;
+    servant-server = dontCheck super.servant-server_0_10;
+    servant-swagger = dontCheck super.servant-swagger_1_1_2_1;
+
+    comonad       = dontCheck super.comonad;
+    distributive  = dontCheck super.distributive;
+    http-date     = dontCheck super.http-date;
+    http-types    = dontCheck super.http-types;
+    http2         = dontCheck super.http2;
+    iproute       = dontCheck super.iproute;
+    lens          = dontCheck super.lens;
+    parsers       = dontCheck super.parsers;
+    semigroupoids = dontCheck super.semigroupoids;
+    swagger2      = dontCheck super.swagger2;
+    turtle        = dontCheck super.turtle;
+    unix-time     = dontCheck super.unix-time;
 
     cryptonite = super.cryptonite_0_23;
     cryptonite-openssl = overhage super.cryptonite-openssl "0.6" "19jhhz1ad5jw8zc7ia9bl77g7nw2g0qjk5nmz1zpngpvdg4rgjx8" {};
 
     ether = super.ether_0_5_0_0;    
     foundation = super.foundation_0_0_8;    
-    memory = super.memory_0_14_5;    
+    memory = super.memory_0_14_5;
+    transformers = super.transformers_0_5_4_0;
     transformers-lift = overhage super.transformers-lift_0_2_0_0 "0.2.0.1" "17g03r5hpnygx0c9ybr9za6208ay0cjvz47rkyplv1r9zcivzn0b" {};
     writer-cps-transformers = super.writer-cps-transformers_0_1_1_3;
     writer-cps-mtl = super.writer-cps-mtl_0_1_1_4;
