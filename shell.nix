@@ -24,7 +24,7 @@ ghc       = ghcOrig.override (oldArgs: {
                        "b6834fd420e0223d0d57f8f98caeeb6ac088be88" "1ia2iw137sza655b0hf4hghpmjbsg3gz3galpvr5pbbsljp26m6p" {};
       stack2nix      = dontCheck
                        (pkgs.haskellPackages.callCabal2nix "stack2nix"
-                        (githubSrc "input-output-hk/stack2nix" "c27a9faa9ba2a7ffd162a38953a36caad15e6839" "1cmw7zq0sf5fr9sc4daf1jwlnjll9wjxqnww36dl9cbbj9ak0m77") {});
+                        (githubSrc "input-output-hk/stack2nix" "616002fa861e809b5c955302af33f0a249257ddb" "0hzw1r8kdsi08lsbd10y7z5945mdf6l57lcfjv00n9fzw26np704") {});
     };
   });
 
