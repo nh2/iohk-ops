@@ -21,6 +21,8 @@ cabal2nix https://github.com/input-output-hk/cardano-sl-explorer.git --no-check 
 cabal2nix https://github.com/input-output-hk/cardano-report-server.git --revision 424e4ecacdf038a01542025dd1296bd272ce770d > cardano-report-server.nix
 cabal2nix https://github.com/input-output-hk/plutus-prototype.git --revision e2e2711e6978002279b4d7c49cab1aff47a2fd43 > plutus-prototype.nix
 
+cabal2nix https://github.com/int-index/ether.git --revision 0c0c26fc8a74b52949d0ad0b1432c0d684393e43 > ether.nix
+
 # TODO: https://github.com/NixOS/cabal2nix/issues/261
 nix-prefetch-git https://github.com/serokell/engine.io.git a594e402fd450f11ad60d09ddbd93db500000632 > engine-io.json
 nix-prefetch-git https://github.com/input-output-hk/cardano-sl.git 1239a6a876fbbb970e836c8bc6bb72d781ba2fa9 > cardano-sl.json
