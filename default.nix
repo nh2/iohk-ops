@@ -34,7 +34,7 @@ in compiler.override {
     plutus-prototype = super.callPackage ./pkgs/plutus-prototype.nix { };
     network-transport = super.callPackage ./pkgs/network-transport.nix { };
     network-transport-tcp = super.callPackage ./pkgs/network-transport-tcp.nix { };
-    ether = withFlags [ "-fdisable-tup-instances" ] (super.callPackage ./pkgs/ether.nix { });
+    ether = dontCheck (withFlags [ "-fdisable-tup-instances" ] (super.callPackage ./pkgs/ether.nix { }));
     # ether = withFlags [ "-fdisable-tup-instances" ] super.ether_0_5_1_0;
 
     # servant-multipart needs servant 0.10
