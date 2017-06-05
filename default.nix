@@ -11,7 +11,7 @@ let
     patchPhase = ''
      export CSL_SYSTEM_TAG=linux64
     '';
-    configureFlags = [ "-f-asserts" "-f-dev-mode" "-fwith-explorer" "--ghc-option=-DCONFIG=prod" "--ghc-option=-rtsopts" "--ghc-option=+RTS" "--ghc-option=+RTS" "--ghc-option=-A256m" "--ghc-option=-n2m" "--ghc-option=-RTS" ];
+    configureFlags = [ "-f-asserts" "-f-dev-mode" "-fwith-explorer" "--ghc-option=-DCONFIG=prod" "--ghc-option=-rtsopts" "--ghc-option=+RTS" "--ghc-option=+RTS" "--ghc-option=-A256m" "--ghc-option=-n2m" "--ghc-option=-RTS" "--ghc-options=-fno-specialise" ];
     # makeFlags = ["+RTS -A256m -n2m -RTS"];
   });
   socket-io-src = pkgs.fetchgit (removeAttrs (lib.importJSON ./pkgs/engine-io.json) ["date"]);
