@@ -23,4 +23,4 @@ cabal2nix https://github.com/input-output-hk/plutus-prototype.git --revision e2e
 
 # TODO: https://github.com/NixOS/cabal2nix/issues/261
 nix-prefetch-git https://github.com/serokell/engine.io.git a594e402fd450f11ad60d09ddbd93db500000632 > engine-io.json
-nix-prefetch-git https://github.com/input-output-hk/cardano-sl.git d7d837bf992a96a73c3ffa20fc7fbfe5f3e3cabb > cardano-sl.json
+nix-prefetch-git https://github.com/input-output-hk/cardano-sl.git 1239a6a876fbbb970e836c8bc6bb72d781ba2fa9 > cardano-sl.json

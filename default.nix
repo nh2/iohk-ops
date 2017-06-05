@@ -12,7 +12,9 @@ let
      export CSL_SYSTEM_TAG=linux64
     '';
     configureFlags = [ "-f-asserts" "-f-dev-mode" "-fwith-explorer" "--ghc-option=-DCONFIG=prod" "--ghc-option=-rtsopts" "--ghc-option=+RTS" "--ghc-option=+RTS" "--ghc-option=-A256m" "--ghc-option=-n2m" "--ghc-option=-RTS" ];
-    # makeFlags = ["+RTS -A256m -n2m -RTS"];
+  });
+  withFlags = flags: drv: overrideCabal drv (drv: {
+    configureFlags = flags;
   });
   socket-io-src = pkgs.fetchgit (removeAttrs (lib.importJSON ./pkgs/engine-io.json) ["date"]);
   cardano-sl-src = pkgs.fetchgit (removeAttrs (lib.importJSON ./pkgs/cardano-sl.json) ["date"]);
@@ -41,7 +43,7 @@ in compiler.override {
     cryptonite = super.cryptonite_0_23;
     cryptonite-openssl = super.cryptonite-openssl_0_6;
 
-    ether = super.ether_0_5_0_0;    
+    ether = withFlags [ "-fdisable-tup-instances" ] super.ether_0_5_1_0;
     transformers-lift = super.transformers-lift_0_2_0_1;
     # sl-explorer fixes
     map-syntax = dontCheck super.map-syntax;
@@ -58,6 +60,7 @@ in compiler.override {
     cardano-sl-lrc = prodMode (super.callCabal2nix "cardano-sl-lrc" "${cardano-sl-src}/lrc" {});
     cardano-sl-update = prodMode (super.callCabal2nix "cardano-sl-update" "${cardano-sl-src}/update" {});
     cardano-sl-ssc = prodMode (super.callCabal2nix "cardano-sl-ssc" "${cardano-sl-src}/ssc" {});
+    cardano-sl-txp = prodMode (super.callCabal2nix "cardano-sl-txp" "${cardano-sl-src}/txp" {});
     cardano-sl-godtossing = prodMode (super.callCabal2nix "cardano-sl-godtossing" "${cardano-sl-src}/godtossing" {});
     cardano-sl-explorer = prodMode (super.callPackage ./pkgs/cardano-sl-explorer.nix { });
 
