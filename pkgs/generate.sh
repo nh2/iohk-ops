@@ -10,7 +10,7 @@ cabal2nix https://github.com/serokell/acid-state.git --revision 95fce1dbada62020
 cabal2nix https://github.com/serokell/log-warper.git --revision cb3288415d40318e04ca920ff81ea4ea8e0380bd > log-warper.nix
 cabal2nix https://github.com/serokell/kademlia.git --no-check --revision 92043c7e80e93aeb08212e8ce42c783edd9b2f80 > kademlia.nix
 cabal2nix https://github.com/serokell/rocksdb-haskell.git --revision 4dfd8d61263d78a91168e86e8005eb9b7069389e > rocksdb-haskell.nix
-cabal2nix https://github.com/serokell/time-warp-nt.git --no-check --revision 3fa7ccea4031a7424e77b63fd1f29e4d69b70b98 > time-warp-nt.nix
+cabal2nix https://github.com/serokell/time-warp-nt.git --no-check --revision cb77f3bbccaf5620300cf4f0f95be71ffe638ac2 > time-warp-nt.nix
 
 cabal2nix https://github.com/thoughtpolice/hs-ed25519.git --revision da4247b5b3420120e20451e6a252e2a2ca15b43c > ed25519.nix
 cabal2nix https://github.com/serokell/network-transport.git --no-check --revision f2321a103f53f51d36c99383132e3ffa3ef1c401 > network-transport.nix
