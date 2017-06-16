@@ -4,7 +4,7 @@
 
 set -xe
 
-cabal2nix https://github.com/serokell/universum --no-check --revision 7fc58d5756ff44beac914b7a597d9cca36235ea3 > universum.nix
+cabal2nix https://github.com/serokell/universum --no-check --revision b7c45fe7cb2bc360df789b8659ddf355aa2d063a > universum.nix
 cabal2nix https://github.com/serokell/serokell-util.git --revision 1309ac5024fb0c62b56c3bd7d16feb0a318a2512 > serokell-util.nix
 cabal2nix https://github.com/serokell/acid-state.git --revision 95fce1dbada62020a0b2d6aa2dd7e88eadd7214b > acid-state.nix
 cabal2nix https://github.com/serokell/log-warper.git --revision cb3288415d40318e04ca920ff81ea4ea8e0380bd > log-warper.nix
