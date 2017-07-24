@@ -51,6 +51,7 @@ awsPublicIPURL = "http://169.254.169.254/latest/meta-data/public-ipv4"
 defaultEnvironment = Development
 defaultTarget      = AWS
 defaultNodeLimit   = 14
+defaultNode          = NodeName "node0"
 
 
 -- * Projects
@@ -534,6 +535,27 @@ scpFromNode o c (fromNodeName -> node) from to = do
 sshForEach :: Options -> NixopsConfig -> [Text] -> IO ()
 sshForEach o c cmd =
   nixops o c "ssh-for-each" ("--": cmd)
+
+deployed'commit :: Options -> NixopsConfig -> NodeName -> IO ()
+deployed'commit o c m = do
+  ssh' o c (\r-> do
+               case cut space r of
+                 (_:path:_) -> do
+                   drv <- incmd o "nix-store" ["--query", "--deriver", T.strip path]
+                   exists <- testpath $ fromText $ T.strip drv
+                   unless exists $
+                     errorT $ "The derivation used to build the package is not present on the system: " <> T.strip drv
+                   sh $ do
+                     x <- inproc "nix-store" ["--query", "--references", T.strip drv] empty &
+                          inproc "egrep"       ["/nix/store/[a-z0-9]*-cardano-sl-[0-9a-f]{7}\\.drv"] &
+                          inproc "sed" ["-E", "s|/nix/store/[a-z0-9]*-cardano-sl-([0-9a-f]{7})\\.drv|\\1|"]
+                     when (x == "") $
+                       errorT $ "Cannot determine commit id for derivation: " <> T.strip drv
+                     echo $ "The 'cardano-sl' process running on '" <> unsafeTextToLine (fromNodeName m) <> "' has commit id " <> x
+                 [""] -> errorT $ "Looks like 'cardano-node' is down on node '" <> fromNodeName m <> "'"
+                 _    -> errorT $ "Unexpected output from 'pgrep -fa cardano-node': '" <> r <> "' / " <> showT (cut space r))
+    ["pgrep", "-fa", "cardano-node"]
+    m
 
 
 -- * Functions for extracting information out of nixops info command
