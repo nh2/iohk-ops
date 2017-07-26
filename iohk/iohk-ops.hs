@@ -166,7 +166,7 @@ centralCommandParser =
    , ("info",                   "Invoke 'nixops info'",                                             pure Info)]
 
    <|> subcommandGroup "Live cluster ops:"
-   [ ("deployed-commit",        "Print commit id of 'cardano-node' running on MACHINE of current cluster.",
+   [ ("deployed-commit",        "Print commit id of 'cardano-node' running on MACHINE of current cluster.\n\nWARNING: this operation is fragile in that it depends upon:\n  1. Nix store to contain the 'cardano-sl' derivation,\n  2. 'cardano-sl' to having been built from Git,\n  3. assumptions on nixpkgs package name & store path structure.\n\nOnly use this command if this doesn't scare you.",
                                 DeployedCommit
                                 <$> parserNodeName Ops.defaultNode)
    , ("checkstatus",            "Check if nodes are accessible via ssh and reboot if they timeout", pure CheckStatus)
