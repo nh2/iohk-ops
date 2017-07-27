@@ -53,6 +53,7 @@ let
     "--logs-prefix /var/lib/cardano-node"
     (optionalString (!cfg.enableP2P) "--kademlia-explicit-initial --disable-propagation ${smartGenPeer}")
     (genPeers cfg.initialPeers)
+    "+RTS -p"
   ];
 in {
   options = {

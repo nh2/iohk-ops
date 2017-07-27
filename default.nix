@@ -32,6 +32,7 @@ let
         "-fwith-explorer"
         # https://github.com/NixOS/nixpkgs/pull/24692#issuecomment-306509337
         "--ghc-option=-optl-lm"
+        "--enable-executable-profiling"
       ];
     });
     cardano-sl-static = justStaticExecutables self.cardano-sl;
@@ -55,9 +56,9 @@ let
     cardano-sl-explorer = prodMode (super.callPackage ./pkgs/cardano-sl-explorer.nix { });
     cardano-sl-explorer-static = justStaticExecutables self.cardano-sl-explorer;
 
-    #mkDerivation = args: super.mkDerivation (args // {
-    #enableLibraryProfiling = false;
-    #});
+    mkDerivation = args: super.mkDerivation (args // {
+      enableLibraryProfiling = true;
+    });
   };
 });
   iohk-ops-extra-runtime-deps = [
